@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+	- 13
+
+services:
+	- docker
+
+before_script:
+	- echo "This is the before scripts section, no tests are required here"
+
+# check docker version, build image and create repo tag
+script:
+	- docker --version
+	- docker build -t simple_node .
+	- docker tag simple_node kunleadeniyi/udacity_nd_simple-node:latest
+
+after_success:
+	- echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAMAE --password-stdin
+	- docker push kunleadeniyi/udacity_nd_simple-node
