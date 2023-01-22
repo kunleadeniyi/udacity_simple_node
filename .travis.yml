@@ -1,19 +1,24 @@
 language: node_js
 node_js:
-	- 12
+  - 13
 
 services:
-	- docker
+  - docker
 
+# Pre-testing installs
+install:
+  - echo "nothing needs to be installed"
+
+# Scripts to be run such as tests
 before_script:
-	- echo "This is the before scripts section, no tests are required here"
+  - echo "no tests"
 
-# check docker version, build image and create repo tag
 script:
-	- docker --version
-	- docker build -t simple_node .
-	- docker tag simple_node kunleadeniyi/udacity_nd_simple-node:latest
+  - docker --version # print the version for logging
+  - docker build -t simple_node .
+  - docker tag simple_node kunleadeniyi/udacity_nd_simple-node:latest
 
+# Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
 after_success:
-	- echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAMAE --password-stdin
-	- docker push kunleadeniyi/udacity_nd_simple-node
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push kunleadeniyi/udacity_nd_simple-node
